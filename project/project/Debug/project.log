@@ -1,0 +1,6 @@
+﻿  project.cpp
+C:\Users\maksf\Desktop\course_project_WINAPI\project\project\project.cpp(309,41): warning C4244: =: преобразование "LONGLONG" в "double", возможна потеря данных
+C:\Users\maksf\Desktop\course_project_WINAPI\project\project\project.cpp(314,31): warning C4244: =: преобразование "LONGLONG" в "double", возможна потеря данных
+C:\Users\maksf\Desktop\course_project_WINAPI\project\project\project.cpp(533,41): warning C4244: =: преобразование "LONGLONG" в "double", возможна потеря данных
+C:\Users\maksf\Desktop\course_project_WINAPI\project\project\project.cpp(539,31): warning C4244: =: преобразование "LONGLONG" в "double", возможна потеря данных
+  project.vcxproj -> C:\Users\maksf\Desktop\course_project_WINAPI\project\Debug\project.exe
