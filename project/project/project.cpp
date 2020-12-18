@@ -37,7 +37,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
 
 	hwnd = CreateWindowEx(
 		0, CLASS_NAME, L"Cleaner",
-		WS_OVERLAPPEDWINDOW,
+		WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_THICKFRAME,
 		CW_USEDEFAULT, CW_USEDEFAULT, 870, 600,
 		NULL, NULL, hInstance, NULL);
 
@@ -103,7 +103,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				350, 0, 500, 600,
 				hwnd, NULL, (HINSTANCE)GetWindowLong(hwnd, GWL_HINSTANCE), NULL);
 
-			SendMessage(hListCheck, EM_LIMITTEXT, 1000000, NULL);
+			SendMessage(hListCheck, EM_LIMITTEXT, 3000000, NULL);
 
 			hCheckBoxCheck = CreateWindow(L"BUTTON",
 				L"Is server?",
@@ -272,12 +272,9 @@ void CheckFilesCache(HWND hStatCheck, LARGE_INTEGER *totalSize, wchar_t* root, i
 
 				DWORD StartPos, EndPos;
 				SendMessage(hListCheck, EM_GETSEL, reinterpret_cast<WPARAM>(&StartPos), reinterpret_cast<WPARAM>(&EndPos));
-
 				int outLength = GetWindowTextLength(hListCheck);
 				SendMessage(hListCheck, EM_SETSEL, outLength, outLength);
-
 				SendMessage(hListCheck, EM_REPLACESEL, TRUE, reinterpret_cast<LPARAM>(rootBuff));
-
 				SendMessage(hListCheck, EM_SETSEL, StartPos, EndPos);
 			}
 		}
@@ -591,14 +588,17 @@ void DeleteFilesCacheUsers(HWND hStatDelete, LARGE_INTEGER* totalSize, wchar_t* 
 }
 
 void EmptyBin(HWND hStatBin) {
-	if (SHEmptyRecycleBin(NULL, NULL, SHERB_NOCONFIRMATION) == S_OK)
-	{
-		wchar_t out[80];
-		wcscpy(out, L"Recycle bin has been emptied.");
-		SetWindowText(hStatBin, out);
-	} else {
-		wchar_t out[80];
-		wcscpy(out, L"ERROR");
-		SetWindowText(hStatBin, out);
+	if (MessageBox(hwnd, L"Are you sure?\r\nThis can't be undone. Check your recycle bin for needed files before doing this.", L"Empty recycle bin", MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2) == 6) {
+		if (SHEmptyRecycleBin(NULL, NULL, SHERB_NOCONFIRMATION) == S_OK)
+		{
+			wchar_t out[80];
+			wcscpy(out, L"Recycle bin has been emptied.");
+			SetWindowText(hStatBin, out);
+		}
+		else {
+			wchar_t out[80];
+			wcscpy(out, L"ERROR");
+			SetWindowText(hStatBin, out);
+		}
 	}
 }
